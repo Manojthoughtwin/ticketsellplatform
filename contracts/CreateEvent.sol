@@ -11,6 +11,7 @@ contract CreateEvent is ERC721, Ownable {
     string private baseURI;
 
     uint256 ticketNumber = 0;
+    uint256 public remainingTickets;
 
     struct EventDetails {
         address payable owner;
@@ -70,6 +71,7 @@ contract CreateEvent is ERC721, Ownable {
         events[_eventID].perUserMaxTicket = _perUserMaxTicket;
         events[_eventID].eventStartTime = _eventStartTime;
         events[_eventID].eventEndTime = _eventEndTime;
+        remainingTickets = events[_eventID].ticketTotalSupply;
         _transferOwnership(owner);
 
         emit EventCreated(_eventID);
@@ -93,7 +95,14 @@ contract CreateEvent is ERC721, Ownable {
     }
 
     function withdrawFund(uint256 _eventID) external onlyOwner {
-        require(events[_eventID].totalFunds > 0, "No fund to Withdraw");
+        require(
+            events[_eventID].totalFunds > 0,
+            "CreateEvent: No fund to Withdraw"
+        );
+        require(
+            events[_eventID].eventStartTime > block.timestamp,
+            "CreateEvent: Can't Withdraw Now As Event not Started yet"
+        );
 
         uint256 withdrawTicketFund = events[_eventID].totalFunds;
 
@@ -103,6 +112,10 @@ contract CreateEvent is ERC721, Ownable {
     }
 
     function buyTicket(uint256 _eventID) external payable {
+        require(
+            events[_eventID].eventStartTime > block.timestamp,
+            "CreateEvent: Can't Buy Tickets as Event is Started"
+        );
         require(
             ticketNumber < events[_eventID].ticketTotalSupply,
             "CreateEvent: OOPS! Tickets Not Available"
@@ -122,6 +135,7 @@ contract CreateEvent is ERC721, Ownable {
 
         events[_eventID].totalFunds += msg.value;
         ticketNumber++;
+        remainingTickets--;
         events[_eventID].tickets[msg.sender].totalUserTickets++;
     }
 }
