@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.12;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CreateEvent is IERC721, Ownable {
+contract CreateEvent is ERC721, Ownable {
     mapping(uint256 => EventDetails) public events;
 
     string private baseURI;
@@ -36,6 +36,7 @@ contract CreateEvent is IERC721, Ownable {
     event EventCreated(uint256 eventID);
 
     constructor(
+        address payable owner,
         string memory _eventName,
         string memory _eventCategory,
         uint256 _eventID,
@@ -69,6 +70,7 @@ contract CreateEvent is IERC721, Ownable {
         events[_eventID].perUserMaxTicket = _perUserMaxTicket;
         events[_eventID].eventStartTime = _eventStartTime;
         events[_eventID].eventEndTime = _eventEndTime;
+        _transferOwnership(owner);
 
         emit EventCreated(_eventID);
     }
@@ -91,13 +93,13 @@ contract CreateEvent is IERC721, Ownable {
     }
 
     function withdrawFund(uint256 _eventID) external onlyOwner {
-        uint256 withdrawTicketFund = events[_eventID].totalFunds;
-        events[_eventID].totalFunds = 0;
+        require(events[_eventID].totalFunds > 0, "No fund to Withdraw");
 
-        (bool success, ) = events[_eventID].owner.call{
-            value: withdrawTicketFund
-        }("");
-        require(success, "Fund Transfer Failed");
+        uint256 withdrawTicketFund = events[_eventID].totalFunds;
+
+        payable(msg.sender).transfer(withdrawTicketFund);
+
+        events[_eventID].totalFunds = 0;
     }
 
     function buyTicket(uint256 _eventID) external payable {
@@ -112,18 +114,14 @@ contract CreateEvent is IERC721, Ownable {
             "CreateEvent: OOPS! You Book More Tickets"
         );
         require(
-            msg.value == events[_eventID].ticketPrice,
+            msg.value >= events[_eventID].ticketPrice,
             "CreateEvent: Invalid Amount Sent "
         );
 
         _mint(msg.sender, ticketNumber);
 
         events[_eventID].totalFunds += msg.value;
-
         ticketNumber++;
-
         events[_eventID].tickets[msg.sender].totalUserTickets++;
-
-        payable(address(this)).transfer(msg.value);
     }
 }

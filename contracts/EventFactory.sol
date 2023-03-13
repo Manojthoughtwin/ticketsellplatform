@@ -9,6 +9,10 @@ contract EventFactory {
     uint256 public contractCount = 0;
     address[] public contracts;
 
+    constructor() {
+        owner = payable(msg.sender);
+    }
+
     event Create(
         address payable owner,
         string eventName,
@@ -32,8 +36,11 @@ contract EventFactory {
         uint256 _eventStartTime,
         uint256 _eventEndTime
     ) public {
+        require(msg.sender == owner);
+        owner = payable(msg.sender);
         address newContract = address(
             new CreateEvent(
+                owner,
                 _eventName,
                 _eventCategory,
                 _eventID,
@@ -44,8 +51,8 @@ contract EventFactory {
                 _eventEndTime
             )
         );
-        contracts.push(newContract);
         contractCount++;
+        contracts.push(newContract);
 
         emit Create(
             payable(msg.sender),
