@@ -35,3 +35,18 @@
    padding: 2rem 0;
   }
  }
+
+ .sign__avatar img {
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  border-radius: 3.80769px;
+  margin-bottom: 30px;
+  object-fit: cover;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+  box-sizing: inherit;
+}

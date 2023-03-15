@@ -1,32 +1,42 @@
-import React from 'react';
+import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
-
 const Index = () => {
+    const [file, setFile] = useState();
+    function handleChange(e) {
+        console.log(e.target.files);
+        setFile(URL.createObjectURL(e.target.files[0]));
+    }
+    
     return (
         <>
             <h4 className='h4'>Profile Page</h4>
             <Form className='form'>
+            <div class = "sign__avatar img">
+                <h6>Profile Image:</h6>
+                <input type="file" onChange={handleChange} />
+                <img src={file} />
+            </div>
+            <br></br>
 
-                <Tabs className='Tabs'>
-                    <Tab eventKey="first" title="My Items">
-                       My Items List
+                <Tabs className= "Tabs" justify>
+                    <Tab eventKey="first" title="Items">
+                        My Items List
                     </Tab>
-                    <Tab eventKey="second" title="My Collections">
-                       My Collections List
+
+                    <Tab eventKey="second" title="Collections">
+                        My Collections List
                     </Tab>
+
                     <Tab eventKey="third" title="Profile">
                         Profile Form
                     </Tab>
                 </Tabs>
+                <br />
 
                 <Form.Group>
                     <Form.Control type="text"

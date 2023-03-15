@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Index from './components/Profile/Index';
+import Index from './components/Profile/index';
 
 function App() {
   return (
