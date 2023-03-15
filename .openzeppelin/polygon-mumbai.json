@@ -1,0 +1,102 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0xe80D8a446302156768b114467B8A59717ae951ce",
+    "txHash": "0x9b3fc61f7d6267a339c3d1b3bc74ba776bb388eaec5b76e42664e4829613e5b1"
+  },
+  "proxies": [
+    {
+      "address": "0x95a2569444FDC1E10E31E3F9DD931F172E317fB1",
+      "txHash": "0x338cb55c2a3a2aa275ae48d6c33a85ba1c70de68a2453ecaee79774c3709d6ac",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x7B8a05544eA5AA056F383fe3C9CF389833F8ff3F",
+      "txHash": "0x1cf6c9cb91b484a96300cfa240870becac8c6841b2945252be649ae84ae830a0",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x6F5838F9722c842a4CEE8967c220f702aD047AC8",
+      "txHash": "0x77bc3f57223ec39f82f1da8848a3eeba3a559efacd63a3b0ff169dfd2800a1ce",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "1b9deba5b05fd92867c7075cde95fe3ae8c23a03f46e7d6ee0f909b080eba035": {
+      "address": "0xC64906022dB47b40525B0766fAAE4CEC3258eB11",
+      "txHash": "0x84b522047882e16911218fa51370a928805e028dbf36094b1246609817f018b1",
+      "layout": {
+        "solcVersion": "0.8.17",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+          },
+          {
+            "label": "owner",
+            "offset": 2,
+            "slot": "0",
+            "type": "t_address_payable",
+            "contract": "EventFactory",
+            "src": "contracts/EventFactory.sol:9"
+          },
+          {
+            "label": "contractCount",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "EventFactory",
+            "src": "contracts/EventFactory.sol:10"
+          },
+          {
+            "label": "contracts",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_address)dyn_storage",
+            "contract": "EventFactory",
+            "src": "contracts/EventFactory.sol:11"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_address_payable": {
+            "label": "address payable",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]",
+            "numberOfBytes": "32"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    }
+  }
+}

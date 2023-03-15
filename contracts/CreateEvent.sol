@@ -4,11 +4,14 @@ pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract CreateEvent is ERC721, Ownable {
     mapping(uint256 => EventDetails) public events;
 
     string private baseURI;
+
+    bytes32 public merkleRoot;
 
     uint256 ticketNumber = 0;
     uint256 public remainingTickets;
@@ -81,16 +84,17 @@ contract CreateEvent is ERC721, Ownable {
         return baseURI;
     }
 
+    function setMerkelRoot(bytes32 _merkleRoot) external onlyOwner {
+        merkleRoot = _merkleRoot;
+    }
+
     function setbaseURI(string memory newbaseURI) external onlyOwner {
         baseURI = newbaseURI;
     }
 
-    function viewFund(uint256 _eventID)
-        external
-        view
-        onlyOwner
-        returns (uint256 currentFund)
-    {
+    function viewFund(
+        uint256 _eventID
+    ) external view onlyOwner returns (uint256 currentFund) {
         return (events[_eventID].totalFunds);
     }
 
@@ -137,5 +141,17 @@ contract CreateEvent is ERC721, Ownable {
         ticketNumber++;
         remainingTickets--;
         events[_eventID].tickets[msg.sender].totalUserTickets++;
+    }
+
+    function verifyUser(
+        bytes32[] calldata _merkleProof
+    ) external view returns (string memory) {
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
+        require(
+            MerkleProof.verify(_merkleProof, merkleRoot, leaf),
+            "Merkle Proof is Invalid"
+        );
+
+        return "User Verfied SuccesFully";
     }
 }

@@ -2,14 +2,15 @@
 
 pragma solidity ^0.8.12;
 
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./CreateEvent.sol";
 
-contract EventFactory {
+contract EventFactory is Initializable {
     address payable public owner;
-    uint256 public contractCount = 0;
+    uint256 public contractCount;
     address[] public contracts;
 
-    constructor() {
+    function initialize() public initializer {
         owner = payable(msg.sender);
     }
 
