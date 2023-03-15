@@ -1,13 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
-import Index from './components/Profile/index';
+import Index from "./components/Profile/index";
+import "bootstrap/dist/css/bootstrap.min.css";
+// import logo from "./logo.svg";
+import "./App.css";
+import Home from "./components/Home/index";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import "./index.css";
 
 function App() {
   return (
-    <div>
-    <Index/>
-    </div>
- 
+    <>
+      <Container fluid>
+        <Row>
+          <Col>
+            <Home />
+            <Button>Name</Button>
+            <Index />
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 
